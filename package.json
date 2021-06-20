@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rdg1029/ChatZip-Signalling-Server/issues"
   },
-  "homepage": "https://github.com/rdg1029/ChatZip-Signalling-Server#readme"
+  "homepage": "https://github.com/rdg1029/ChatZip-Signalling-Server#readme",
+  "dependencies": {
+    "socket.io": "^4.1.2"
+  }
 }
