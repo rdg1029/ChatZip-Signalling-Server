@@ -8,8 +8,12 @@ const io = require('socket.io')(httpServer, {
 io.on('connection', socket => {
     console.log(socket.id + ' connected');
 
-    socket.on('join room', room => {
-        socket.join(room);
+    socket.on('create room', room => {
+        socket.join(room)
+    });
+
+    socket.on('req room', (room, offer) => {
+        socket.to(room).emit('req room', offer)
     });
 
     socket.on('disconnect', () => {
