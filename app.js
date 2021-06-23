@@ -6,7 +6,8 @@ const io = require('socket.io')(httpServer, {
 });
 
 io.on('connection', socket => {
-    console.log(socket.id + ' connected');
+    //console.log(socket.id + ' connected');
+    socket.emit('open');
 
     socket.on('create room', room => {
         socket.join(room)
