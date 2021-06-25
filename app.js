@@ -10,11 +10,12 @@ io.on('connection', socket => {
     socket.emit('open');
 
     socket.on('create room', room => {
-        socket.join(room)
+        socket.join(room.id)
+        socket.emit('join room', room);
     });
 
     socket.on('req room', (room, offer) => {
-        socket.to(room).emit('req room', offer)
+        socket.to(room.id).emit('req room', offer)
     });
 
     socket.on('disconnect', () => {
