@@ -15,11 +15,13 @@ io.on('connection', socket => {
         rooms.push(room.id);
         socket.join(room.id)
         socket.emit('join room', room);
+        console.log(rooms);
     });
 
     socket.on('req room', roomId => {
-        if (roomId in rooms) {
-            socket.to(roomId).emit('req room', offer)
+        if (rooms.includes(roomId)) {
+            console.log('room exist');
+            socket.to(roomId).emit('req room');
         }
         else {
             socket.emit('room not found');
