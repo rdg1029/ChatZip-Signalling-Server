@@ -5,6 +5,8 @@ const io = require('socket.io')(httpServer, {
     }
 });
 
+let rooms = [];
+
 io.on('connection', socket => {
     //console.log(socket.id + ' connected');
     socket.emit('open');
