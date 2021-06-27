@@ -12,12 +12,18 @@ io.on('connection', socket => {
     socket.emit('open');
 
     socket.on('create room', room => {
+        rooms.push(room.id);
         socket.join(room.id)
         socket.emit('join room', room);
     });
 
-    socket.on('req room', (room, offer) => {
-        socket.to(room.id).emit('req room', offer)
+    socket.on('req room', roomId => {
+        if (roomId in rooms) {
+            socket.to(roomId).emit('req room', offer)
+        }
+        else {
+            socket.emit('room not found');
+        }
     });
 
     socket.on('disconnect', () => {
