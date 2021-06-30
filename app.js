@@ -20,7 +20,8 @@ io.on('connection', socket => {
 
     socket.on('req room', roomId => {
         if (rooms.includes(roomId)) {
-            socket.to(roomId).emit('req room', socket.id);
+            socket.emit('room found', roomId);
+            // socket.to(roomId).emit('req room', socket.id);
         }
         else {
             socket.emit('room not found');
