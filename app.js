@@ -18,7 +18,7 @@ io.on('connection', socket => {
         console.log(rooms);
     });
 
-    socket.on('req room', roomId => {
+    socket.on('find room', roomId => {
         if (rooms.includes(roomId)) {
             socket.emit('room found', roomId);
             // socket.to(roomId).emit('req room', socket.id);
