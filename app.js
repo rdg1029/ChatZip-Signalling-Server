@@ -28,6 +28,18 @@ io.on('connection', socket => {
         }
     });
 
+    socket.on('req info', (roomId, userId) => {
+        io.to(roomId).emit('req info', userId);
+    })
+
+    socket.on('req answer', (offer, userId, targetId) => {
+        io.to(targetId).emit('req answer', offer, userId);
+    });
+    
+    socket.on('recv answer', (answer, userId, targetId) => {
+        io.to(targetId).emit('recv answer', answer, userId);
+    })
+
     socket.on('disconnect', () => {
         console.log(socket.id + ' disconnected');
     });
