@@ -11,10 +11,10 @@ io.on('connection', socket => {
     //console.log(socket.id + ' connected');
     socket.emit('open');
 
-    socket.on('create room', room => {
-        rooms.push(room.id);
-        socket.join(room.id)
-        socket.emit('join room', room);
+    socket.on('create room', roomId => {
+        rooms.push(roomId);
+        socket.join(roomId)
+        socket.emit('join room', roomId);
         console.log(rooms);
     });
 
