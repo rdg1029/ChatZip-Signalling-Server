@@ -15,7 +15,8 @@ io.on('connection', socket => {
         rooms.push(roomId);
         socket.join(roomId)
         socket.emit('join room', roomId);
-        console.log(rooms);
+        socket.data.room = roomId;
+        console.log(socket.data.room);
     });
 
     socket.on('find room', roomId => {
