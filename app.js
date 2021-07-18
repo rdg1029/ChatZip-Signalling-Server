@@ -13,7 +13,8 @@ io.on('connection', socket => {
 
     socket.on('create room', roomId => {
         rooms.push(roomId);
-        socket.join(roomId)
+        socket.join(roomId);
+        socket.data.room = roomId;
         socket.emit('join room', roomId);
         console.log(rooms);
     });
@@ -56,6 +57,7 @@ io.on('connection', socket => {
         io.to(socket.id).emit('join room', roomId);
         io.to(roomId).emit('user join', socket.id);
         socket.join(roomId);
+        socket.data.room = roomId;
     });
 
     socket.on('is alone', isAlone => {
@@ -66,6 +68,9 @@ io.on('connection', socket => {
         if(socket.data.isAlone) {
             rooms.splice(rooms.indexOf(socket.data.room), 1);
             console.log(rooms);
+        }
+        else {
+            io.to(socket.data.room).emit('user quit', socket.id);
         }
         console.log(socket.id + ' disconnected');
     });
