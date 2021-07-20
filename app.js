@@ -5,40 +5,40 @@ const io = require('socket.io')(httpServer, {
     }
 });
 
-let rooms = [];
+let groups = [];
 
 io.on('connection', socket => {
     //console.log(socket.id + ' connected');
     socket.emit('open');
 
-    socket.on('create room', roomId => {
-        rooms.push(roomId);
-        socket.join(roomId);
-        socket.data.room = roomId;
-        socket.emit('join room', roomId);
-        console.log(rooms);
+    socket.on('create group', groupId => {
+        groups.push(groupId);
+        socket.join(groupId);
+        socket.data.group = groupId;
+        socket.emit('join group', groupId);
+        console.log(groups);
     });
 
-    socket.on('find room', roomId => {
-        if (rooms.includes(roomId)) {
-            socket.emit('room found', roomId);
-            // socket.to(roomId).emit('req room', socket.id);
+    socket.on('find group', groupId => {
+        if (groups.includes(groupId)) {
+            socket.emit('group found', groupId);
+            // socket.to(groupId).emit('req group', socket.id);
         }
         else {
-            socket.emit('room not found');
+            socket.emit('group not found');
         }
     });
 
-    socket.on('req info', (roomId, userId) => {
-        io.to(roomId).emit('req info', userId);
+    socket.on('req info', (groupId, userId) => {
+        io.to(groupId).emit('req info', userId);
     })
 
-    socket.on('room info', (targetId, users) => {
-        io.to(targetId).emit('room info', users);
+    socket.on('group info', (targetId, users) => {
+        io.to(targetId).emit('group info', users);
     });
 
-    socket.on('req offer', (roomId, userId) => {
-        io.to(roomId).emit('req offer', userId);
+    socket.on('req offer', (groupId, userId) => {
+        io.to(groupId).emit('req offer', userId);
     });
 
     socket.on('req answer', (offer, userId, targetId) => {
@@ -53,11 +53,11 @@ io.on('connection', socket => {
         io.to(targetId).emit('conn ready');
     });
 
-    socket.on('req join', roomId => {
-        io.to(socket.id).emit('join room', roomId);
-        io.to(roomId).emit('user join', socket.id);
-        socket.join(roomId);
-        socket.data.room = roomId;
+    socket.on('req join', groupId => {
+        io.to(socket.id).emit('join group', groupId);
+        io.to(groupId).emit('user join', socket.id);
+        socket.join(groupId);
+        socket.data.group = groupId;
     });
 
     socket.on('is alone', isAlone => {
@@ -66,11 +66,11 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
         if(socket.data.isAlone) {
-            rooms.splice(rooms.indexOf(socket.data.room), 1);
-            console.log(rooms);
+            groups.splice(groups.indexOf(socket.data.group), 1);
+            console.log(groups);
         }
         else {
-            io.to(socket.data.room).emit('user quit', socket.id);
+            io.to(socket.data.group).emit('user quit', socket.id);
         }
         console.log(socket.id + ' disconnected');
     });
