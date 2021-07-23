@@ -16,7 +16,7 @@ io.on('connection', socket => {
         socket.join(groupId);
         socket.data.group = groupId;
         socket.emit('join group', groupId);
-        console.log(groups);
+        //console.log(groups);
     });
 
     socket.on('find group', groupId => {
@@ -67,12 +67,12 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         if(socket.data.isAlone) {
             groups.splice(groups.indexOf(socket.data.group), 1);
-            console.log(groups);
+            //console.log(groups);
         }
         else {
             io.to(socket.data.group).emit('user quit', socket.id);
         }
-        console.log(socket.id + ' disconnected');
+        //console.log(socket.id + ' disconnected');
     });
 });
 
