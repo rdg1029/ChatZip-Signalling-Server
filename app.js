@@ -54,7 +54,7 @@ io.on('connection', socket => {
     });
 
     socket.on('req join', groupId => {
-        io.to(socket.id).emit('join group', groupId);
+        io.to(socket.id).emit('join group');
         io.to(groupId).emit('user join', socket.id);
         socket.join(groupId);
         socket.data.group = groupId;
