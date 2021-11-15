@@ -37,24 +37,20 @@ io.on('connection', socket => {
         io.to(targetId).emit('group info', users);
     });
 
-    socket.on('req offer', (groupId, userId) => {
-        io.to(groupId).emit('req offer', userId);
+    socket.on('req offer', (groupId, userData) => {
+        io.to(groupId).emit('req offer', userData);
     });
 
-    socket.on('req answer', (offer, userId, targetId) => {
-        io.to(targetId).emit('req answer', offer, userId);
+    socket.on('req answer', (offer, userData, targetId) => {
+        io.to(targetId).emit('req answer', offer, userData);
     });
     
-    socket.on('recv answer', (answer, userId, targetId) => {
-        io.to(targetId).emit('recv answer', answer, userId);
-    })
-
-    socket.on('conn ready', targetId => {
-        io.to(targetId).emit('conn ready');
+    socket.on('recv answer', (answer, userData, targetId) => {
+        io.to(targetId).emit('recv answer', answer, userData);
     });
 
     socket.on('req join', groupId => {
-        io.to(socket.id).emit('join group');
+        io.to(socket.id).emit('join group', groupId);
         io.to(groupId).emit('user join', socket.id);
         socket.join(groupId);
         socket.data.group = groupId;
